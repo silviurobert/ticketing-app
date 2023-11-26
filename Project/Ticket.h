@@ -104,13 +104,6 @@ public:
 		this->type = TicketType::BOXES;
 	}
 
-	/*int id = 0;
-	Event* event;
-	TicketType type = TicketType::VIP;
-	int row = 0;
-	int seat = 0;
-	char* backInfo = nullptr;*/
-
 	void operator=(const Ticket& source) {
 		if (&source == this) {
 			return;
@@ -121,6 +114,35 @@ public:
 		this->setRow(source.row);
 		this->setSeat(source.seat);
 		this->setBackInfo(source.backInfo);
+	}
+
+	bool operator==(Ticket ticket) {
+		return this->id == ticket.id;
+	}
+
+	void readTicket() {
+		std::cout << std::endl << "Ticket type (VIP, TRIBUNE, LAWN, BOXES): ";
+		std::string type;
+		std::cin >> type;
+		this->setType(Util::stringToType(type));
+
+		std::cout << "Row number: ";
+		std::cin >> this->row;
+
+		std::cout << "Seat number: ";
+		std::cin >> this->seat;
+
+		std::cout << "Back info: ";
+		std::string info;
+		std::cin >> info;
+		this->setBackInfo(info.c_str());
+	}
+
+	void displayTicket() {
+		if (this->backInfo == nullptr) return;
+		std::cout << "Ticket: ID:" << this->id << ", type:" << Util::typeToString(this->type) <<
+			", rowNo:" << this->row << ", seatNo:" << this->seat << ", backInfo:" << this->backInfo << std::endl;
+		this->event->displayEvent();
 	}
 
 	//Destructor

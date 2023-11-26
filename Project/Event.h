@@ -105,12 +105,6 @@ public:
 		this->eventDescription =  Util::copyString(eventDescription);
 	}
 
-	/*std::string eventName = "";
-	char eventDate[11] = ""; // dd/mm/yyyy
-	char eventStartTime[6] = ""; // hh:mm
-	char eventEndTime[6] = ""; // hh:mm
-	char* eventDescription = nullptr;*/
-
 	void operator=(const Event& source) {
 		if (&source == this) {
 			return;
@@ -122,12 +116,42 @@ public:
 		this->setEventDescription(source.eventDescription);
 	}
 
+	void readEvent() {
+		std::cout << std::endl << "Event name: ";
+		std::cin >> this->eventName;
+
+		std::cout << "event date (dd/mm/yyyy): ";
+		std::string eventDate;
+		std::cin >> eventDate;
+		this->setEventDate(eventDate.c_str());
+		
+		std::cout << "Event start time (hh:mm): ";
+		std::string eventStartTime;
+		std::cin >> eventStartTime;
+		this->setEventStartTime(eventStartTime.c_str());
+
+		std::cout << "Event end time (hh:mm): ";
+		std::string eventEndTime;
+		std::cin >> eventEndTime;
+		this->setEventEndTime(eventEndTime.c_str());
+
+		std::cout << "Event description: ";
+		std::string eventDescription;
+		std::cin >> eventDescription;
+		this->setEventDescription(eventDescription.c_str());
+	}
+
+	void displayEvent() {
+		if (this->eventDescription == nullptr) return;
+		std::cout << "Event: Name:" << this->eventName << ", date:" << this->eventDate <<
+			", start:" << this->eventStartTime << ", end:" << this->eventEndTime <<
+			", description:" << this->eventDescription << std::endl;
+		this->location->displayLocation();
+	}
+
 	//Destructor
 	~Event() {
 		delete[] this->eventDescription;
 	}
 
-	//char eventStartTime[6] = ""; // hh:mm
-	//aici fac int& operator[](int index){
-	//if(index < 0 || )
 };

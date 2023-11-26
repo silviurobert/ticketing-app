@@ -8,32 +8,70 @@ using namespace std;
 
 
 int main() {
+    //MENU 
+    Location* location = new Location();
+    Event* event = new Event();
+    Ticket* ticket = new Ticket();
+    int key = 0;
 
-	Location location1(2000, 100, 20, "Very spacious location");
-	cout << endl << "The first location details are: ";
-	cout << endl << "The maximum number of seats is: " << location1.getNumberOfSeats();
-	cout << endl << "The number of rows is: " << location1.getNumberOfRows();
-	cout << endl << "The number of seats per row is: " << location1.getSeatsPerRow();
-	cout << endl << "Location description: " << location1.getLocationDescription();
+    do {
+        cout << "[1] CREATE NEW LOCATION" << endl;
+        cout << "[2] CREATE NEW EVENT" << endl;
+        cout << "[3] CREATE NEW TICKET" << endl;
+        cout << "[4] DISPLAY LOCATION" << endl;
+        cout << "[5] DISPLAY EVENT" << endl;
+        cout << "[6] DISPLAY TICKET" << endl;
+        cout << "[0] EXIT" << endl;
 
-	cout << endl << "-----------------------------------------------------";
-	Event event1("The Weeknd Concert", "04/08/2023", location1, "18:00", "23:00", "The best concert ever!");
-	cout << endl << "The first event details are: ";
-	cout << endl << "Event name: " << event1.getEventName();
-	cout << endl << "Event date: " << event1.getEventDate();
-	cout << endl << "Event start time: " << event1.getEventStartTime();
-	cout << endl << "Event end time: " << event1.getEventEndTime();
-	cout << endl << "Event description: " << event1.getEventDescription();
+        cout << "Select from options displayed above: ";
+        cin >> key;
 
-	cout << endl << "-----------------------------------------------------";
+        switch (key) {
+        case 1: {
+            location->readLocation();
+            cout << "New Location has beeen creatd" << endl << endl;
+        } break;
+        case 2: {
+            int finished = 0;
+            while(finished == 0)
+            {
+                try {
+                    event->readEvent();
+                    event->setLocation(location);
+                    cout << "New event has been created" << endl << endl;
+                    finished = 1;
+                }
+                catch (exception e) {
+                    cout << endl  << "Data input error! Please try again.";
+                    finished = 0;
+                }
+            }
+            
+        } break;
+        case 3: {
+            ticket->readTicket();
+            ticket->setEvent(event);
+            cout << "New ticket has been created" << endl << endl;
+        } break;
+        case 4: {
+            location->displayLocation();
+        } break;
+        case 5: {
+            event->displayEvent();
+        } break;
+        case 6: {
+            ticket->displayTicket();
+        } break;
+        case 0: {
+            cout << "[0] EXIT" << endl;
+        } break;
+        default: cout << "Please select from the menu..." << endl;
+        }
+        cout << "[1]Yes\n[0]No\n";
+        cout << "Do you want to continue?\n";
+        cout << "Select from options displayed above: ";
+        cin >> key;
 
-	//cout << endl << "Box State: " << Util::stateToString(box.getState());
-	
-
-	Ticket ticket1(event1, 20, 16, "Check our website: www.concert-goers.com");
-	cout << endl << "The concert name is:" << ticket1.getEvent()->getEventName();
-	cout << endl << "The row number is:" << ticket1.getRow();
-	cout << endl << "The seat number is:" << ticket1.getSeat();
-	cout << endl << "Info regarding the concert: " << ticket1.getBackInfo();
-	cout << endl << "Type: " << Util::typeToString(ticket1.getType());
+    } while (key != 0);
+    return 0;
 }

@@ -31,8 +31,16 @@ public:
 		}
 	}
 
+	static TicketType stringToType(std::string type) {
+		if (type == "VIP") return TicketType::VIP;
+		if (type == "TRIBUNE") return TicketType::TRIBUNE;
+		if (type == "LAWN") return TicketType::LAWN;
+		if (type == "BOXES") return TicketType::BOXES;
+	}
+
 	static int generateUniqueRandomNumber() {
-		Sleep(1000);
+		//to be sure you create an unique random number, use the Sleep() function below:
+		//Sleep(1000);
 		srand((unsigned)time(NULL));
 		return rand();
 	}

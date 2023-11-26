@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "Util.h"
 
 class Location
@@ -84,11 +85,56 @@ public:
         this->seatsPerRow += 1;
     }
 
+    void readLocation() {
+        std::cout << std::endl << "Max number of seats: ";
+        std::cin >> this->maxNumberOfSeats;
+
+        std::cout << "Number of rows: ";
+        std::cin >> this->numberOfRows;
+
+        std::cout << "Seats per row: ";
+        std::cin >> this->seatsPerRow;
+
+        std::cout << "Description: ";
+        std::string description;
+        std::cin >> description;
+        this->setLocationDescription(description.c_str());
+    }
+
+    void displayLocation() {
+        if (this->locationDescription == nullptr) return;
+        std::cout << "Location: Description:" << this->locationDescription << ", noSeats:" << this->maxNumberOfSeats <<
+            ", noRows:" << this->numberOfRows << ", seatsPerRow:" << this->seatsPerRow << std::endl;
+    }
+   
+    //I tried overloading the >> operator, but it didn't work, so I implemented the readLocation() method instead.
+     
+    //friend std::istream& operator>> (std::istream& is, Location& location);
+
     //Destructor
     ~Location() {
         delete[] this->locationDescription;
     }
 
 };
+
+/*std::istream& operator>> (std::istream& is, Location& location)
+{
+    std::cout << "Max number of seats: ";
+    is >> location.maxNumberOfSeats;
+
+    std::cout << "Number of rows: ";
+    is >> location.numberOfRows;
+
+    std::cout << "Seats per row: ";
+    is >> location.seatsPerRow;
+
+    std::cout << "Description: ";
+    std::string line;
+    std::getline(is, line);
+    location.locationDescription = line.data();
+
+    return is;
+}*/
 
 
