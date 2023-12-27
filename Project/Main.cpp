@@ -5,16 +5,20 @@ using namespace std;
 #include "Location.h"
 #include "Event.h"
 #include "Ticket.h"
+#include "TicketVIP.h"
 
 
 int main() {
     //MENU 
     Location* location = new Location();
     Event* event = new Event();
-    Ticket* ticket = new Ticket();
+    Ticket* ticket = new TicketVIP();
+    ticket->readTicket();
+    ticket->displayTicket();
+    ticket->displayBenefits();
     int key = 0;
 
-    do {
+    /*do {
         cout << "[1] CREATE NEW LOCATION" << endl;
         cout << "[2] CREATE NEW EVENT" << endl;
         cout << "[3] CREATE NEW TICKET" << endl;
@@ -72,6 +76,6 @@ int main() {
         cout << "Select from options displayed above: ";
         cin >> key;
 
-    } while (key != 0);
+    } while (key != 0);*/
     return 0;
 }

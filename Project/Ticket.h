@@ -13,6 +13,7 @@ private:
 	int row = 0;
 	int seat = 0;
 	char* backInfo = nullptr;
+	
 
 public:
 	//Ctor without params
@@ -144,6 +145,10 @@ public:
 			", rowNo:" << this->row << ", seatNo:" << this->seat << ", backInfo:" << this->backInfo << std::endl;
 		this->event->displayEvent();
 	}
+
+	virtual void displayBenefits() {
+		std::cout << "\n";
+		}
 
 	//Destructor
 	~Ticket() {
