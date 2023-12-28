@@ -1,6 +1,0 @@
-﻿  Main.cpp
-  Ticket.cpp
-  TicketVIP.cpp
-  Generating Code...
-D:\ASE\AN 2\1, POO\ticketing-app\Project\Util.h(39): warning C4715: 'Util::stringToType': not all control paths return a value
-  Project.vcxproj -> D:\ASE\AN 2\1, POO\ticketing-app\Project\x64\Debug\Project.exe

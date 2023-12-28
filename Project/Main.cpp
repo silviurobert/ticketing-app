@@ -6,13 +6,16 @@ using namespace std;
 #include "Event.h"
 #include "Ticket.h"
 #include "TicketVIP.h"
+#include "TicketBOXES.h"
+#include "TicketTRIBUNE.h"
+#include "TicketLAWN.h"
 
 
 int main() {
     //MENU 
     Location* location = new Location();
     Event* event = new Event();
-    Ticket* ticket = new TicketVIP();
+    Ticket* ticket = new TicketLAWN();
     ticket->readTicket();
     ticket->displayTicket();
     ticket->displayBenefits();

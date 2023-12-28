@@ -33,3 +33,6 @@
 
 *.opendb
 *.opensdf
+
+Project/.vs/
+Project/x64/

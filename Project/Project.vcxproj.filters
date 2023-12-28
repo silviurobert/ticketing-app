@@ -36,6 +36,9 @@
     <ClCompile Include="TicketVIP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TicketBOXES.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Location.h">
@@ -54,6 +57,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TicketVIP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TicketBOXES.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TicketTRIBUNE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TicketLAWN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
