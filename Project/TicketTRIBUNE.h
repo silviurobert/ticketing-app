@@ -5,5 +5,10 @@ public:
 	virtual void displayBenefits() {
 		std::cout << "Priority services, better view, invitation to pre or post events";
 	}
+
+	void readTicket() override {
+		this->setType(TRIBUNE);
+		Ticket::readTicket();
+	}
 };
 

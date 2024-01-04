@@ -5,5 +5,10 @@ public:
 	virtual void displayBenefits() {
 		std::cout << "Priority services, better view, catering services";
 	}
+
+	void readTicket() override {
+		this->setType(BOXES);
+		Ticket::readTicket();
+	}
 };
 

@@ -5,5 +5,10 @@ public:
 	virtual void displayBenefits() {
 		std::cout << "More space, closest to the stage, you can bring your own chair";
 	}
+
+	void readTicket() override {
+		this->setType(LAWN);
+		Ticket::readTicket();
+	}
 };
 

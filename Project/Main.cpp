@@ -5,18 +5,36 @@ using namespace std;
 #include "Location.h"
 #include "Event.h"
 #include "Ticket.h"
+#include "TicketType.h"
 #include "TicketVIP.h"
 #include "TicketBOXES.h"
 #include "TicketTRIBUNE.h"
 #include "TicketLAWN.h"
 
 
+Ticket* readTicket(TicketType type) {
+    Ticket* ticket = nullptr;
+    switch (type) {
+        case VIP: ticket = new TicketVIP(); break;
+        case LAWN: ticket = new TicketLAWN(); break;
+        case TRIBUNE: ticket = new TicketTRIBUNE(); break;
+        case BOXES: ticket = new TicketBOXES(); break;
+    }
+    ticket->readTicket();
+
+    return ticket;
+}
+
 int main() {
     //MENU 
     Location* location = new Location();
     Event* event = new Event();
-    Ticket* ticket = new TicketLAWN();
-    ticket->readTicket();
+
+    cout << endl << "Ticket type (VIP, TRIBUNE, LAWN, BOXES): ";
+    string type;
+    cin >> type;
+        
+    Ticket* ticket = readTicket(Util::stringToType(type));
     ticket->displayTicket();
     ticket->displayBenefits();
     int key = 0;
@@ -82,3 +100,4 @@ int main() {
     } while (key != 0);*/
     return 0;
 }
+

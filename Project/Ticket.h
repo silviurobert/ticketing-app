@@ -121,11 +121,8 @@ public:
 		return this->id == ticket.id;
 	}
 
-	void readTicket() {
-		std::cout << std::endl << "Ticket type (VIP, TRIBUNE, LAWN, BOXES): ";
-		std::string type;
-		std::cin >> type;
-		this->setType(Util::stringToType(type));
+	virtual void readTicket() {
+		
 
 		std::cout << "Row number: ";
 		std::cin >> this->row;
