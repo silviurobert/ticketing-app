@@ -2,8 +2,11 @@
 #include "Ticket.h"
 class TicketBOXES : public Ticket {
 public:
-	virtual void displayBenefits() {
-		std::cout << "Priority services, better view, catering services";
+	void addBenefits() override {
+		Ticket::addBenefits();
+		this->benefits.push_back("priority services");
+		this->benefits.push_back("better view");
+		this->benefits.push_back("catering services");
 	}
 
 	void readTicket() override {

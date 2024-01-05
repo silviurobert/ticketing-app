@@ -4,8 +4,11 @@
 
 class TicketVIP : public Ticket {
 public:
-	virtual void displayBenefits() {
-		std::cout << "Photos with artist, signed merch, free drinks";
+	void addBenefits() override {
+		Ticket::addBenefits();
+		this->benefits.push_back("photos with artist");
+		this->benefits.push_back("signed merch");
+		this->benefits.push_back("free drinks");
 	}
 
 	void readTicket() override {

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "TicketType.h"
 #include "Util.h"
 #include "Event.h"
@@ -13,13 +14,15 @@ private:
 	int row = 0;
 	int seat = 0;
 	char* backInfo = nullptr;
-	
+protected:
+	std::vector<std::string> benefits;
 
 public:
 	//Ctor without params
 	Ticket() {
 		this->id = Util::generateUniqueRandomNumber();
 		this->event = new Event();
+		
 	}
 
 	//Ctor with params
@@ -134,6 +137,7 @@ public:
 		std::string info;
 		std::cin >> info;
 		this->setBackInfo(info.c_str());
+		this->addBenefits();
 	}
 
 	void displayTicket() {
@@ -143,9 +147,15 @@ public:
 		this->event->displayEvent();
 	}
 
-	virtual void displayBenefits() {
-		std::cout << "\n";
+	void displayBenefits() {
+		for (const auto& element : this->benefits) {
+			std::cout << element << "; ";
 		}
+	}
+
+	virtual void addBenefits() {
+		this->benefits.push_back("Free first drink");
+	}
 
 	//Destructor
 	~Ticket() {

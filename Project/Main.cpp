@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <vector>
 using namespace std;
 #include "Util.h"
 #include "Location.h"
@@ -26,8 +27,18 @@ Ticket* readTicket(TicketType type) {
 }
 
 int main() {
+
     //MENU 
+    vector<Location> locations;
     Location* location = new Location();
+    /*location->readLocation();
+    locations.push_back(*location);
+    locations.push_back(*location);
+    locations.push_back(*location);
+    for (auto& loc : locations) {
+        loc.displayLocation();
+    }*/
+
     Event* event = new Event();
 
     cout << endl << "Ticket type (VIP, TRIBUNE, LAWN, BOXES): ";
