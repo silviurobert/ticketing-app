@@ -2,9 +2,10 @@
 #include "Util.h"
 #include <string>
 #include "Location.h"
+#include "Displayable.h"
 
 
-class Event{
+class Event : public Displayable {
 private:
 	std::string eventName = "";
 	char eventDate[11] = ""; // dd/mm/yyyy
@@ -141,12 +142,12 @@ public:
 		this->setEventDescription(eventDescription.c_str());
 	}
 
-	void displayEvent() {
+	void display() override {
 		if (this->eventDescription == nullptr) return;
 		std::cout << "Event: Name:" << this->eventName << ", date:" << this->eventDate <<
 			", start:" << this->eventStartTime << ", end:" << this->eventEndTime <<
 			", description:" << this->eventDescription << std::endl;
-		this->location->displayLocation();
+		this->location->display();
 	}
 
 	//Destructor

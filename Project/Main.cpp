@@ -1,7 +1,11 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string.h>
 #include <vector>
+#include <fstream>
+#include <sstream>
 using namespace std;
+#include "Displayable.h"
 #include "Util.h"
 #include "Location.h"
 #include "Event.h"
@@ -11,7 +15,18 @@ using namespace std;
 #include "TicketBOXES.h"
 #include "TicketTRIBUNE.h"
 #include "TicketLAWN.h"
+#include <vector>
 
+
+
+
+//clasa abstracta cu metoda pura
+//fisiere
+//citire despre locatii eventuri tickete
+//sa generam prin meniu un ticket
+//sa fie unice
+//sa salvam intr un fisier binar
+//sa citim ce am pus in el
 
 Ticket* readTicket(TicketType type) {
     Ticket* ticket = nullptr;
@@ -26,11 +41,80 @@ Ticket* readTicket(TicketType type) {
     return ticket;
 }
 
+
+
 int main() {
+    vector<Location> locations;
+    vector<Event> events;
+
+    ifstream locationsFile("locations.txt");
+    if (!locationsFile.is_open()) {
+        cerr << "Unable to open the file";
+        return 1;
+    }
+
+    string line;
+    int maxNumberOfSeats = 0;
+    int numberOfRows = 0;
+    int seatsPerRow = 0;
+    char* locationDescription = nullptr;
+
+    while (getline(locationsFile, line)) {
+       
+        istringstream iss(line);
+        if (iss >> maxNumberOfSeats >> numberOfRows >> seatsPerRow) {
+            if (getline(locationsFile, line)) {
+                locationDescription = new char[line.length() + 1];
+                strcpy(locationDescription, line.c_str());
+                Location* location = new Location(maxNumberOfSeats, numberOfRows, seatsPerRow, locationDescription);
+                locations.push_back(*location);
+            }
+        }
+        
+        
+    }
+    for (auto& element : locations) {
+          element.display() ;
+    }
+    locationsFile.close();
+
+    cout << endl << endl;
+
+    string eventName = "";
+	char eventDate[11] = ""; // dd/mm/yyyy
+	int locationIndex;
+	char eventStartTime[6] = ""; // hh:mm
+	char eventEndTime[6] = ""; // hh:mm
+	char* eventDescription = nullptr;	
+
+    ifstream eventsFile("events.txt");
+    if (!eventsFile.is_open()) {
+        cerr << "Unable to open the file";
+        return 1;
+    }
+    
+
+    while (getline(eventsFile, line)) {
+        eventName = line;
+        if (getline(eventsFile, line)){
+            istringstream iss(line);
+            if (iss >> eventDate >> locationIndex >> eventStartTime >> eventEndTime) {
+                if (getline(eventsFile, line)) {
+                    eventDescription = new char[line.length() + 1];
+                    strcpy(eventDescription, line.c_str());
+                    Event* event = new Event(eventName, eventDate, locations[locationIndex], eventStartTime, eventEndTime, eventDescription);
+                    events.push_back(*event);
+                }
+            }
+        }
+    }
+    for (auto& element : events) {
+        element.display();
+    }
+    eventsFile.close();
 
     //MENU 
-    vector<Location> locations;
-    Location* location = new Location();
+    
     /*location->readLocation();
     locations.push_back(*location);
     locations.push_back(*location);
@@ -39,18 +123,18 @@ int main() {
         loc.displayLocation();
     }*/
 
-    Event* event = new Event();
+    /* Event* event = new Event();
 
     cout << endl << "Ticket type (VIP, TRIBUNE, LAWN, BOXES): ";
     string type;
     cin >> type;
         
     Ticket* ticket = readTicket(Util::stringToType(type));
-    ticket->displayTicket();
+    ticket->display();
     ticket->displayBenefits();
     int key = 0;
 
-    /*do {
+    do {
         cout << "[1] CREATE NEW LOCATION" << endl;
         cout << "[2] CREATE NEW EVENT" << endl;
         cout << "[3] CREATE NEW TICKET" << endl;

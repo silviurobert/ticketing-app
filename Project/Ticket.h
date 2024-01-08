@@ -4,9 +4,10 @@
 #include "TicketType.h"
 #include "Util.h"
 #include "Event.h"
+#include "Displayable.h"
 
 
-class Ticket{
+class Ticket : public Displayable {
 private:
 	int id = 0;
 	Event* event;
@@ -140,11 +141,11 @@ public:
 		this->addBenefits();
 	}
 
-	void displayTicket() {
+	void display() override {
 		if (this->backInfo == nullptr) return;
 		std::cout << "Ticket: ID:" << this->id << ", type:" << Util::typeToString(this->type) <<
 			", rowNo:" << this->row << ", seatNo:" << this->seat << ", backInfo:" << this->backInfo << std::endl;
-		this->event->displayEvent();
+		this->event->display();
 	}
 
 	void displayBenefits() {
@@ -164,4 +165,5 @@ public:
 	}
 
 };
+
 

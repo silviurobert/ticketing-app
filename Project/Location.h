@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
 #include "Util.h"
+#include "Displayable.h"
 
-class Location
-{
+class Location : public Displayable {
 private:
     int maxNumberOfSeats = 0;
     int numberOfRows = 0;
@@ -101,7 +101,7 @@ public:
         this->setLocationDescription(description.c_str());
     }
 
-    void displayLocation() {
+    void display() override {
         if (this->locationDescription == nullptr) return;
         std::cout << "Location: Description:" << this->locationDescription << ", noSeats:" << this->maxNumberOfSeats <<
             ", noRows:" << this->numberOfRows << ", seatsPerRow:" << this->seatsPerRow << std::endl;

@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Displayable.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Location.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Displayable.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Location.h" />
     <ClInclude Include="Ticket.h" />
@@ -146,6 +148,10 @@
     <ClInclude Include="TicketType.h" />
     <ClInclude Include="TicketVIP.h" />
     <ClInclude Include="Util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="events.txt" />
+    <Text Include="locations.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
