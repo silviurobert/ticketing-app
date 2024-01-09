@@ -9,6 +9,7 @@ private:
     int numberOfRows = 0;
     int seatsPerRow = 0;
     const char* locationDescription = nullptr;
+    int** availableSeats = nullptr;
 
 public:
     //Ctor without params
@@ -19,6 +20,7 @@ public:
     Location(int maxNumberOfSeats, int numberOfRows, int seatsPerRow, const char* locationDescription) :
         maxNumberOfSeats(maxNumberOfSeats), numberOfRows(numberOfRows), seatsPerRow(seatsPerRow) {
         this->setLocationDescription(locationDescription);
+        this->setAvailableSeats();
     }
 
     //copy ctor
@@ -27,6 +29,7 @@ public:
         this->numberOfRows = location.numberOfRows;
         this->seatsPerRow = location.seatsPerRow;
         this->setLocationDescription(location.locationDescription);
+        this->setAvailableSeats();
     }
 
     //Getters and Setters
@@ -62,6 +65,42 @@ public:
     void setLocationDescription(const char* description) {
         this->locationDescription = Util::copyString(description);
     }
+
+    int** getAvailableSeats() {
+        return this->availableSeats;
+    }
+
+    void setAvailableSeats() {
+        //std::cout << this->seatsPerRow << "\n\n\n\n\n\n";
+        this->availableSeats = new int*[this->numberOfRows];
+        for (int i = 0; i < this->numberOfRows; i++) {
+            this->availableSeats[i] = new int[this->seatsPerRow];
+        }
+        for (int i = 0; i < this->numberOfRows; i++) {
+            for (int j = 0; j < this->seatsPerRow; j++) {
+                this->availableSeats[i][j] = (i + 1) * 10 + (j + 1);
+            }
+        }
+    }
+
+    bool isSeatAvailable(int row, int seat) {
+        std::cout << row << " " << seat << "\n";
+        return this->availableSeats[row][seat] != 0;
+    }
+
+    void displayAvailableSeats() {
+        for (int i = 0; i < this->numberOfRows; i++) {
+            for (int j = 0; j < this->seatsPerRow; j++) {
+                std::cout << "    " << this->availableSeats[i][j] << "  ";
+                
+            }
+            std::cout << std::endl << std::endl;
+        }
+    }
+
+    void bookSeat(int row, int seat) {
+        this->availableSeats[row - 1][seat - 1] = 0;
+    }
     
     void operator=(const Location& source) {
         if (&source == this) {
@@ -71,6 +110,7 @@ public:
         this->numberOfRows = source.numberOfRows;
         this->seatsPerRow = source.seatsPerRow;
         this->setLocationDescription(source.locationDescription);
+        this->setAvailableSeats();
     }
 
     void operator+=(int v) {
@@ -114,6 +154,10 @@ public:
     //Destructor
     ~Location() {
         delete[] this->locationDescription;
+        for (int i = 0; i < this->numberOfRows; i++) {
+            delete[] this->availableSeats[i];
+        }
+        delete[] this->availableSeats;
     }
 
 };

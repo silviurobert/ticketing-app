@@ -15,23 +15,35 @@ private:
 	int row = 0;
 	int seat = 0;
 	char* backInfo = nullptr;
+	
 protected:
 	std::vector<std::string> benefits;
 
 public:
+	
 	//Ctor without params
 	Ticket() {
-		this->id = Util::generateUniqueRandomNumber();
 		this->event = new Event();
-		
 	}
 
 	//Ctor with params
-	Ticket( Event event, int row, int seat, const char* backInfo) : row(row), seat(seat) {
+	Ticket(Event event, int row, int seat, const char* backInfo) : row(row), seat(seat) {
+		this->row = row;
+		this->seat = seat;
 		this->setBackInfo(backInfo);
-		this->id = Util::generateUniqueRandomNumber();
-		this->event = new Event(event.getEventName(), event.getEventDate(), *event.getLocation(), event.getEventStartTime(), 
-			event.getEventEndTime(), event.getEventDescription());
+		
+		this->event = &event;
+		
+		if (this->isAvailable()) {
+			
+			this->id = row * 10 + seat;
+			this->event->getLocation()->bookSeat(this->row, this->seat);
+		}
+		else {
+			throw std::exception("The ticket is unavailable");
+		}
+		//this->event = new Event(event.getEventName(), event.getEventDate(), *event.getLocation(), event.getEventStartTime(), 
+			//event.getEventEndTime());
 	}
 
 	//copy ctor
@@ -46,10 +58,6 @@ public:
 	//Getters and Setters
 	int getId() {
 		return this->id;
-	}
-
-	void setId(int id) {
-		this->id = id;
 	}
 
 	Event* getEvent() {
@@ -81,7 +89,7 @@ public:
 	}
 
 	void setSeat(int value) {
-		this->row = value;
+		this->seat = value;
 	}
 
 	char* getBackInfo() {
@@ -113,8 +121,8 @@ public:
 		if (&source == this) {
 			return;
 		}
-		this->setId(source.id);
 		this->setEvent(source.event);
+		
 		this->setType(source.type);
 		this->setRow(source.row);
 		this->setSeat(source.seat);
@@ -145,7 +153,8 @@ public:
 		if (this->backInfo == nullptr) return;
 		std::cout << "Ticket: ID:" << this->id << ", type:" << Util::typeToString(this->type) <<
 			", rowNo:" << this->row << ", seatNo:" << this->seat << ", backInfo:" << this->backInfo << std::endl;
-		this->event->display();
+		//this->event->display();
+		//std::cout << "Event name: " << event->getEventName();
 	}
 
 	void displayBenefits() {
@@ -158,12 +167,24 @@ public:
 		this->benefits.push_back("Free first drink");
 	}
 
+	bool isAvailable() {
+		/*this->event->getLocation()->displayAvailableSeats();
+		if (this->event->getLocation()->isSeatAvailable(this->row, this->seat)) {
+			std::cout << "OK\n";
+		}
+		else {
+			std::cout << "NOT OK\n";
+		}
+		
+		std::cout << this->event->getLocation()->getAvailableSeats()[this->row][this->seat] << "\n";*/
+		return this->event->getLocation()->getAvailableSeats()[this->row - 1][this->seat - 1] != 0;
+	}
+
 	//Destructor
 	~Ticket() {
 		delete[] this->event;
 		delete[] this->backInfo;
 	}
-
 };
 
 

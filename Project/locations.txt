@@ -1,4 +1,4 @@
-50 10 5 
+25 5 5 
 Munchen
-30 10 3 
+25 5 5 
 Arena Nationala

@@ -22,14 +22,15 @@ public:
 
 	//Ctor with params
 	Event(std::string name, const char* date, Location location, const char* eventStartTime,
-		const char* eventEndTime, std::string eventDescription) : eventName(name) {
+		const char* eventEndTime) : eventName(name) {
 		this->setEventDate(date);
-		this->location = new Location(location.getNumberOfSeats(), location.getNumberOfRows(), location.getNumberOfSeats(), 
+		//this->location = &location;
+		this->location = new Location(location.getNumberOfSeats(), location.getNumberOfRows(), location.getSeatsPerRow(), 
 			location.getLocationDescription());
 
 		this->setEventStartTime(eventStartTime);
 		this->setEventEndTime(eventEndTime);
-		this->setEventDescription(eventDescription.c_str());
+		//this->setEventDescription(eventDescription);
 	}
 
 	//copy ctor
@@ -39,7 +40,7 @@ public:
 		this->setLocation(event.location);
 		this->setEventStartTime(event.eventStartTime);
 		this->setEventEndTime(event.eventEndTime);
-		this->setEventDescription(event.eventDescription);
+		//this->setEventDescription(event.eventDescription);
 	}
 
 	//Getters and Setters
@@ -98,6 +99,7 @@ public:
 	}
 
 	char* getEventDescription() {
+		
 		char* copy = Util::copyString(this->eventDescription);
 		return copy;
 	}
@@ -114,7 +116,7 @@ public:
 		this->setEventDate(source.eventDate);
 		this->setEventStartTime(source.eventStartTime);
 		this->setEventEndTime(source.eventEndTime);
-		this->setEventDescription(source.eventDescription);
+		//this->setEventDescription(source.eventDescription);
 	}
 
 	void readEvent() {
@@ -143,10 +145,8 @@ public:
 	}
 
 	void display() override {
-		if (this->eventDescription == nullptr) return;
 		std::cout << "Event: Name:" << this->eventName << ", date:" << this->eventDate <<
-			", start:" << this->eventStartTime << ", end:" << this->eventEndTime <<
-			", description:" << this->eventDescription << std::endl;
+			", start:" << this->eventStartTime << ", end:" << this->eventEndTime << std::endl;
 		this->location->display();
 	}
 

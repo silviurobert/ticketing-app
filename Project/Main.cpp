@@ -28,24 +28,23 @@ using namespace std;
 //sa salvam intr un fisier binar
 //sa citim ce am pus in el
 
-Ticket* readTicket(TicketType type) {
+Ticket* generateTicket(TicketType type, Event event, int row, int seat, char* backInfo) {
     Ticket* ticket = nullptr;
-    switch (type) {
-        case VIP: ticket = new TicketVIP(); break;
-        case LAWN: ticket = new TicketLAWN(); break;
-        case TRIBUNE: ticket = new TicketTRIBUNE(); break;
-        case BOXES: ticket = new TicketBOXES(); break;
-    }
-    ticket->readTicket();
 
+    switch (type) {
+        case VIP: ticket = new TicketVIP(event, row, seat, backInfo); break;
+        case LAWN: ticket = new TicketLAWN(event, row, seat, backInfo); break;
+        case TRIBUNE: ticket = new TicketTRIBUNE(event, row, seat, backInfo); break;
+        case BOXES: ticket = new TicketBOXES(event, row, seat, backInfo); break;
+    }
     return ticket;
 }
 
 
-
-int main() {
+int main() { 
     vector<Location> locations;
     vector<Event> events;
+    vector<Ticket*> tickets;
 
     ifstream locationsFile("locations.txt");
     if (!locationsFile.is_open()) {
@@ -58,7 +57,7 @@ int main() {
     int numberOfRows = 0;
     int seatsPerRow = 0;
     char* locationDescription = nullptr;
-
+    
     while (getline(locationsFile, line)) {
        
         istringstream iss(line);
@@ -70,16 +69,13 @@ int main() {
                 locations.push_back(*location);
             }
         }
-        
-        
     }
-    for (auto& element : locations) {
-          element.display() ;
-    }
+    
+    
     locationsFile.close();
 
     cout << endl << endl;
-
+    
     string eventName = "";
 	char eventDate[11] = ""; // dd/mm/yyyy
 	int locationIndex;
@@ -102,45 +98,25 @@ int main() {
                 if (getline(eventsFile, line)) {
                     eventDescription = new char[line.length() + 1];
                     strcpy(eventDescription, line.c_str());
-                    Event* event = new Event(eventName, eventDate, locations[locationIndex], eventStartTime, eventEndTime, eventDescription);
+                    //cout << locations[locationIndex].getLocationDescription() << endl;
+                    Event* event = new Event(eventName, eventDate, locations[locationIndex], eventStartTime, eventEndTime);
                     events.push_back(*event);
                 }
             }
         }
     }
-    for (auto& element : events) {
-        element.display();
-    }
+    
     eventsFile.close();
 
-    //MENU 
-    
-    /*location->readLocation();
-    locations.push_back(*location);
-    locations.push_back(*location);
-    locations.push_back(*location);
-    for (auto& loc : locations) {
-        loc.displayLocation();
-    }*/
 
-    /* Event* event = new Event();
-
-    cout << endl << "Ticket type (VIP, TRIBUNE, LAWN, BOXES): ";
-    string type;
-    cin >> type;
-        
-    Ticket* ticket = readTicket(Util::stringToType(type));
-    ticket->display();
-    ticket->displayBenefits();
+    //MENU    
     int key = 0;
 
     do {
-        cout << "[1] CREATE NEW LOCATION" << endl;
-        cout << "[2] CREATE NEW EVENT" << endl;
-        cout << "[3] CREATE NEW TICKET" << endl;
-        cout << "[4] DISPLAY LOCATION" << endl;
-        cout << "[5] DISPLAY EVENT" << endl;
-        cout << "[6] DISPLAY TICKET" << endl;
+        cout << "[1] DISPLAY ALL EVENTS" << endl;
+        cout << "[2] BOOK A TICKET" << endl;
+        cout << "[3] DISPLAY ALL TICKETS" << endl;
+        cout << "[4] CHECK TICKET" << endl;
         cout << "[0] EXIT" << endl;
 
         cout << "Select from options displayed above: ";
@@ -148,39 +124,83 @@ int main() {
 
         switch (key) {
         case 1: {
-            location->readLocation();
-            cout << "New Location has beeen creatd" << endl << endl;
+            for (auto& element : events) {
+                element.display();
+            }
         } break;
         case 2: {
-            int finished = 0;
-            while(finished == 0)
-            {
-                try {
-                    event->readEvent();
-                    event->setLocation(location);
-                    cout << "New event has been created" << endl << endl;
-                    finished = 1;
+            try {
+                int index = 1;
+                for (auto& element : events) {
+                    cout << "[" << index << "]" << element.getEventName() << endl;
+                    index++;
                 }
-                catch (exception e) {
-                    cout << endl  << "Data input error! Please try again.";
-                    finished = 0;
+                cout << "CHOOSE EVENT FROM ABOVE:";
+                int eventIndex;
+                cin >> eventIndex;
+                events[eventIndex - 1].getLocation()->displayAvailableSeats();
+                cout << "CHOOSE YOUR SEAT:\n";
+                int row, seat;
+                cout << "ROW:"; cin >> row;
+                cout << "SEAT:"; cin >> seat;
+                Location* location = events[eventIndex - 1].getLocation();
+                if (row <= 0 || row >= location->getNumberOfRows() || seat <= 0 || seat >= location->getSeatsPerRow()) {
+                   cout << "Invalid input!\n";
+                   break;
                 }
+
+                cout << endl << "Ticket type (VIP, TRIBUNE, LAWN, BOXES): ";
+                string type;
+                cin >> type;
+
+                char backInfo[] = "The best event!";
+                //events[eventIndex - 1].display();
+
+
+                Ticket* ticket = generateTicket(Util::stringToType(type), events[eventIndex - 1], row, seat, backInfo);
+
+                tickets.push_back(ticket);
+                cout << "Ticket has been booked sucessfully!\n";
+                ticket->display();
+
             }
+            catch (exception e) {
+                cout << "Invalid Input\n";
+            }
+                
+                
+                
+            
+            
             
         } break;
         case 3: {
-            ticket->readTicket();
-            ticket->setEvent(event);
-            cout << "New ticket has been created" << endl << endl;
+            for (auto& element : tickets) {
+                 element->display();
+            }
+            
         } break;
         case 4: {
-            location->displayLocation();
-        } break;
-        case 5: {
-            event->displayEvent();
-        } break;
-        case 6: {
-            ticket->displayTicket();
+            int ticketId;
+            cout << "CHECK TICKET ID: ";
+            cin >> ticketId;
+            int found = 0;
+            for (auto& element : tickets) {
+                if (element->getId() == ticketId) {
+                    found = 1;
+                   
+                    break;
+                }
+                
+            } 
+            if (found) {
+                cout << "Ticket is valid!\n";
+               
+            }
+            else {
+                cout << "Ticket is not valid!\n";
+            }
+            
         } break;
         case 0: {
             cout << "[0] EXIT" << endl;
@@ -192,7 +212,7 @@ int main() {
         cout << "Select from options displayed above: ";
         cin >> key;
 
-    } while (key != 0);*/
+    } while (key != 0);
     return 0;
 }
 

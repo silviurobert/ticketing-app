@@ -4,6 +4,11 @@
 
 class TicketVIP : public Ticket {
 public:
+	TicketVIP(Event event, int row, int seat, char* backInfo) : Ticket(event, row, seat, backInfo) {
+		
+		this->setType(VIP);
+	}
+
 	void addBenefits() override {
 		Ticket::addBenefits();
 		this->benefits.push_back("photos with artist");
@@ -15,5 +20,7 @@ public:
 		this->setType(VIP);
 		Ticket::readTicket();
 	}
+
+	
 };
 
